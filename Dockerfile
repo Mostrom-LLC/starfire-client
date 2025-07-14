@@ -20,8 +20,8 @@ WORKDIR /app
 
 # Install all dependencies including devDependencies
 COPY package*.json ./
-RUN npm install -g typescript
-RUN npm ci --include=dev
+RUN npm install
+#RUN npm ci --include=dev
 
 # Copy source code
 COPY . .
