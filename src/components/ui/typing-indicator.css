@@ -1,0 +1,15 @@
+@keyframes typingDotBounce {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.animate-typing-dot-bounce {
+  animation: typingDotBounce 1s infinite ease-in-out;
+}
