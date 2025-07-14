@@ -1,10 +1,10 @@
-# Starfire: AI-Native Intelligence Platform for Life Sciences
+# Starfire: AI-Native Intelligence Platform
 
-Starfire is a comprehensive AI-powered platform designed specifically for life sciences teams. It leverages AWS Bedrock, LangChain, and modern web technologies to provide intelligent data processing, analysis, and visualization capabilities.
+Starfire is a comprehensive AI-powered platform. It leverages AWS Bedrock, LangChain, and modern web technologies to provide intelligent data processing, analysis, and visualization capabilities.
 
 ## Overview
 
-Starfire helps life sciences teams transform raw data into actionable commercial intelligence through:
+Starfire helps transform raw data into actionable commercial intelligence through:
 
 - **Data Ingestion & Analysis**: Upload and automatically analyze documents with AI
 - **Knowledge Base Querying**: Ask questions about your data with natural language
