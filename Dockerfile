@@ -20,6 +20,7 @@ WORKDIR /app
 
 # Install all dependencies including devDependencies
 COPY package*.json ./
+RUN npm install -g typescript
 RUN npm ci --include=dev
 
 # Ensure TypeScript is properly installed
