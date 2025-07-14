@@ -499,10 +499,10 @@ export function Upload() {
           <table className="w-full table-fixed flex-1">
             <thead>
               <tr className="bg-gray-50 border-b border-gray-200">
-                <th className="w-[8%] px-2 py-1.5 text-left text-xs font-medium text-gray-600">
+                <th className="w-[8%] px-4 py-3 text-left text-xs font-medium text-gray-600">
                   Select
                 </th>
-                <th className="w-[30%] px-2 py-1.5 text-left text-xs font-medium text-gray-600">
+                <th className="w-[25%] px-4 py-3 text-left text-xs font-medium text-gray-600">
                   <div className="flex items-center justify-between">
                     <span>Name</span>
                     <button
@@ -514,7 +514,7 @@ export function Upload() {
                     </button>
                   </div>
                 </th>
-                <th className="w-[35%] px-2 py-1.5 text-left text-xs font-medium text-gray-600">
+                <th className="w-[42%] px-4 py-3 text-left text-xs font-medium text-gray-600">
                   <div className="flex items-center justify-between">
                     <span>Summary</span>
                     <button
@@ -526,10 +526,10 @@ export function Upload() {
                     </button>
                   </div>
                 </th>
-                <th className="w-[25%] px-2 py-1.5 text-left text-xs font-medium text-gray-600">
+                <th className="w-[23%] px-4 py-3 text-left text-xs font-medium text-gray-600">
                   Key Topics
                 </th>
-                <th className="w-[2%] px-2 py-1.5 text-left text-xs font-medium text-gray-600">
+                <th className="w-[2%] px-4 py-3 text-left text-xs font-medium text-gray-600">
                   {/* Actions column - reserved for future use */}
                 </th>
               </tr>
@@ -538,8 +538,8 @@ export function Upload() {
               {/* Uploading Documents */}
               {uploadingDocuments.map((uploadingDoc) => (
                 <tr key={uploadingDoc.id} className="border-b border-gray-100 bg-blue-50 hover:bg-blue-100">
-                  <td className="px-1 py-0 align-middle">
-                    <div className="flex items-center gap-1">
+                  <td className="px-4 py-3 align-middle">
+                    <div className="flex items-center gap-2">
                       <div className="w-3 h-2 flex-shrink-0"></div>
                       <div className="animate-spin text-blue-600 flex-shrink-0">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -548,53 +548,53 @@ export function Upload() {
                       </div>
                     </div>
                   </td>
-                  <td className="px-1 py-0 align-middle">
-                    <div className="flex items-center gap-1">
-                      <span className="truncate text-blue-700" title={uploadingDoc.name}>
+                  <td className="px-4 py-3 align-middle">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className="truncate text-blue-700 flex-1" title={uploadingDoc.name}>
                         {uploadingDoc.name}
                       </span>
-                      <span className="text-xs text-blue-600 ml-auto whitespace-nowrap">Uploading...</span>
+                      <span className="text-xs text-blue-600 whitespace-nowrap flex-shrink-0">Uploading...</span>
                     </div>
                   </td>
-                  <td className="px-1 py-0 align-middle">
-                    <div className="animate-pulse bg-blue-200 h-1.5 w-24 rounded"></div>
+                  <td className="px-4 py-3 align-middle">
+                    <div className="animate-pulse bg-blue-200 h-4 w-24 rounded"></div>
                   </td>
-                  <td className="px-1 py-0 align-middle">
-                    <div className="flex gap-0.5">
-                      <div className="animate-pulse bg-blue-200 h-2 w-12 rounded-sm"></div>
-                      <div className="animate-pulse bg-blue-200 h-2 w-8 rounded-sm"></div>
+                  <td className="px-4 py-3 align-middle">
+                    <div className="flex gap-1 overflow-hidden">
+                      <div className="animate-pulse bg-blue-200 h-5 w-12 rounded-sm"></div>
+                      <div className="animate-pulse bg-blue-200 h-5 w-8 rounded-sm"></div>
                     </div>
                   </td>
-                  <td className="px-1 py-0 align-middle"></td>
+                  <td className="px-4 py-3 align-middle"></td>
                 </tr>
               ))}
               
               {/* Loading State */}
               {isLoadingDocuments && Array.from({ length: 5 }, (_, index) => (
                 <tr key={index} className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="px-1 py-0 align-middle">
-                    <div className="animate-pulse bg-gray-200 h-2 w-8 rounded"></div>
+                  <td className="px-4 py-3 align-middle">
+                    <div className="animate-pulse bg-gray-200 h-4 w-8 rounded"></div>
                   </td>
-                  <td className="px-1 py-0 align-middle">
-                    <div className="animate-pulse bg-gray-200 h-2 w-32 rounded"></div>
+                  <td className="px-4 py-3 align-middle">
+                    <div className="animate-pulse bg-gray-200 h-4 w-32 rounded"></div>
                   </td>
-                  <td className="px-1 py-0 align-middle">
-                    <div className="animate-pulse bg-gray-200 h-2 w-38 rounded"></div>
+                  <td className="px-4 py-3 align-middle">
+                    <div className="animate-pulse bg-gray-200 h-4 w-full rounded"></div>
                   </td>
-                  <td className="px-1 py-0 align-middle">
-                    <div className="flex gap-0.5">
-                      <div className="animate-pulse bg-gray-200 h-2 w-12 rounded-sm"></div>
-                      <div className="animate-pulse bg-gray-200 h-2 w-8 rounded-sm"></div>
+                  <td className="px-4 py-3 align-middle">
+                    <div className="flex gap-1 overflow-hidden">
+                      <div className="animate-pulse bg-gray-200 h-5 w-12 rounded-sm"></div>
+                      <div className="animate-pulse bg-gray-200 h-5 w-8 rounded-sm"></div>
                     </div>
                   </td>
-                  <td className="px-1 py-0 align-middle"></td>
+                  <td className="px-4 py-3 align-middle"></td>
                 </tr>
               ))}
               
               {/* Error State */}
               {documentsError && (
                 <tr className="border-b border-gray-100">
-                  <td colSpan={5} className="px-1 py-0 text-center text-xs text-red-600">
+                  <td colSpan={5} className="px-4 py-8 text-center text-sm text-red-600">
                     Error: {documentsError instanceof Error ? documentsError.message : 'Failed to fetch documents'}
                   </td>
                 </tr>
@@ -609,8 +609,8 @@ export function Upload() {
                     selectedDocuments.has(doc.id) ? "bg-blue-50" : ""
                   )}
                 >
-                  <td className="px-1 py-0 align-middle">
-                    <div className="flex items-center gap-1">
+                  <td className="px-4 py-3 align-middle">
+                    <div className="flex items-center gap-2">
                       <Checkbox 
                         checked={selectedDocuments.has(doc.id)}
                         onCheckedChange={() => toggleDocumentSelection(doc.id)}
@@ -621,44 +621,48 @@ export function Upload() {
                         onClick={() => openDocumentModal(doc)}
                         title="View document details"
                       >
-                        <LuExpand size={10} />
+                        <LuExpand size={12} />
                       </button>
                     </div>
                   </td>
-                  <td className="px-1 py-0 align-middle">
-                    <span className="truncate inline-block" title={String(doc.name || '')}>
-                      {String(doc.name || '')}
-                    </span>
+                  <td className="px-4 py-3 align-middle">
+                    <div className="min-w-0">
+                      <span className="block truncate text-sm" title={String(doc.name || '')}>
+                        {String(doc.name || '')}
+                      </span>
+                    </div>
                   </td>
-                  <td className="px-1 py-0 align-middle">
-                    <span className="truncate inline-block" title={String(doc.summary || '')}>
-                      {String(doc.summary || '')}
-                    </span>
+                  <td className="px-4 py-3 align-middle">
+                    <div className="min-w-0">
+                      <span className="block truncate text-sm leading-5" title={String(doc.summary || '')}>
+                        {String(doc.summary || '')}
+                      </span>
+                    </div>
                   </td>
-                  <td className="px-1 py-0 align-middle">
-                    <div className="flex gap-0.5 overflow-hidden">
+                  <td className="px-4 py-3 align-middle">
+                    <div className="flex gap-1 overflow-hidden max-w-full">
                       {Array.isArray(doc.key_topics) && doc.key_topics.length > 0 ? (
                         <>
-                          {doc.key_topics.slice(0, 3).map((topic, index) => {
+                          {doc.key_topics.slice(0, 2).map((topic, index) => {
                             const colorIndex = (index % 12) + 1;
                             return (
                               <span
                                 key={index}
-                                className={`px-1 py-0 rounded-sm text-xs topic-color-${colorIndex} whitespace-nowrap flex-shrink-0`}
+                                className={`px-2 py-1 rounded-sm text-xs topic-color-${colorIndex} whitespace-nowrap flex-shrink-0 max-w-[80px] truncate`}
                                 title={topic}
                               >
                                 {topic}
                               </span>
                             );
                           })}
-                          {doc.key_topics.length > 3 && (
-                            <span className="px-1 py-0 rounded-sm text-xs bg-gray-100 text-gray-600 whitespace-nowrap flex-shrink-0">
-                              +{doc.key_topics.length - 3} more
+                          {doc.key_topics.length > 2 && (
+                            <span className="px-2 py-1 rounded-sm text-xs bg-gray-100 text-gray-600 whitespace-nowrap flex-shrink-0">
+                              +{doc.key_topics.length - 2}
                             </span>
                           )}
                         </>
                       ) : doc.key_topics && typeof doc.key_topics === 'string' && String(doc.key_topics).trim() ? (
-                        <span className="px-1 py-0 rounded-sm text-xs topic-color-1" title={String(doc.key_topics)}>
+                        <span className="px-2 py-1 rounded-sm text-xs topic-color-1 max-w-[120px] truncate" title={String(doc.key_topics)}>
                           {String(doc.key_topics)}
                         </span>
                       ) : (
@@ -666,14 +670,14 @@ export function Upload() {
                       )}
                     </div>
                   </td>
-                  <td className="px-1 py-0 align-middle"></td>
+                  <td className="px-4 py-3 align-middle"></td>
                 </tr>
               ))}
               
               {/* Empty State */}
               {!isLoadingDocuments && !documentsError && filteredAndSortedDocuments.length === 0 && uploadingDocuments.length === 0 && (
                 <tr className="border-b border-gray-100">
-                  <td colSpan={5} className="px-3 py-4 text-center text-gray-500">
+                  <td colSpan={5} className="px-4 py-8 text-center text-gray-500">
                     {searchQuery ? 'No documents match your search' : 'No documents found'}
                   </td>
                 </tr>
