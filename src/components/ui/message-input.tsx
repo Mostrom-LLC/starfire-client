@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
-import { ArrowUp, Info, Loader2, Mic, Paperclip, Square, X } from "lucide-react"
+import { ArrowUp, Info, Loader2, Mic, Paperclip, Square } from "lucide-react"
 import { omit } from "remeda"
 
 import { cn } from "@/lib/utils"
@@ -157,7 +157,7 @@ export function MessageInput({
     onKeyDownProp?.(event)
   }
 
-  const textAreaRef = useRef<HTMLTextAreaElement>(null)
+  const textAreaRef = useRef<HTMLTextAreaElement>(null) as React.RefObject<HTMLTextAreaElement>
   const [textAreaHeight, setTextAreaHeight] = useState<number>(0)
 
   useEffect(() => {
