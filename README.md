@@ -1,69 +1,91 @@
-# React + TypeScript + Vite
+# Starfire: AI-Native Intelligence Platform for Life Sciences
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Starfire is a comprehensive AI-powered platform designed specifically for life sciences teams. It leverages AWS Bedrock, LangChain, and modern web technologies to provide intelligent data processing, analysis, and visualization capabilities.
 
-Currently, two official plugins are available:
+## Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Starfire helps life sciences teams transform raw data into actionable commercial intelligence through:
 
-## Expanding the ESLint configuration
+- **Data Ingestion & Analysis**: Upload and automatically analyze documents with AI
+- **Knowledge Base Querying**: Ask questions about your data with natural language
+- **Interactive Chat**: Engage in conversations with context-aware AI assistance
+- **Data Visualization**: Generate insightful charts and presentations from your data
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Key Features
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Upload & Document Management
+- File upload with drag-and-drop support
+- Automatic document analysis using AWS Bedrock
+- Document categorization and summarization
+- Paginated document listing with sorting and filtering
+- Document selection for batch operations
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+### Knowledge Base Analysis
+- Interactive data visualization dashboard
+- AI-generated charts (bar, line, pie, radar, scatter)
+- Automatic insight generation from document data
+- Export to PowerPoint presentations and PDF reports
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### AI Chat Interface
+- Context-aware conversations about your data
+- Chat history management with session saving
+- Real-time streaming responses via WebSockets
+- Citations and references to source documents
+
+## Technology Stack
+
+- **Frontend**: React, TypeScript, Vite
+- **UI Components**: shadcn/ui, Tailwind CSS
+- **State Management**: React Query (TanStack Query)
+- **Visualization**: Recharts, shadcn/ui chart components
+- **API Communication**: WebSockets, REST API
+
+## Getting Started
+
+### Prerequisites
+- Node.js 18+ and npm/yarn
+- Access to Starfire backend API
+
+### Environment Setup
+
+Create a `.env` file in the project root with the following variables:
+
+```env
+VITE_BACKEND_URL=http://localhost:8000
+VITE_APIKEY=your-api-key
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Installation
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+# Install dependencies
+npm install
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
 ```
+
+## Project Structure
+
+```
+src/
+├── components/         # UI components
+│   ├── projects/       # Project-specific components
+│   │   ├── Upload.tsx  # Document upload & management
+│   │   ├── Analyze.tsx # Data analysis & visualization
+│   │   ├── Chat.tsx    # AI chat interface
+│   ├── ui/             # shadcn/ui components
+├── pages/              # Application pages
+│   ├── dashboard.tsx   # Main dashboard
+├── lib/                # Utility functions
+```
+
+## Development Notes
+
+- The application uses React Query for data fetching and caching
+- WebSocket connections are used for real-time chat functionality
+- Pagination is implemented for document listing (10 items per page)
+- Visualization components use Recharts for rendering charts
