@@ -23,9 +23,6 @@ COPY package*.json ./
 RUN npm install -g typescript
 RUN npm ci --include=dev
 
-# Ensure TypeScript is properly installed
-RUN npm install -g typescript
-
 # Copy source code
 COPY . .
 
