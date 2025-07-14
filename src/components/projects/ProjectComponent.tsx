@@ -9,7 +9,6 @@ import {
 import { Upload } from "./Upload"
 import { Review } from "./Analyze"
 import { Chat } from "./Chat"
-import { Separator } from "@/components/ui/separator"
 
 interface ProjectComponentProps {
   projectName: string

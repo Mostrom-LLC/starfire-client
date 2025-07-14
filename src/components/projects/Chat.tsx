@@ -34,9 +34,6 @@ interface ChatSession {
   isActive?: boolean;
 }
 
-// API Configuration
-const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000';
-const API_KEY = import.meta.env.VITE_APIKEY || '';
 
 // API Functions for Chat History Management
 const fetchChatHistory = async (): Promise<ChatSession[]> => {
@@ -86,7 +83,7 @@ const createChatSession = async (title?: string): Promise<ChatSession> => {
   return newChat;
 };
 
-const updateChatSession = async (id: string, updates: Partial<ChatSession>): Promise<ChatSession> => {
+/* const updateChatSession = async (id: string, updates: Partial<ChatSession>): Promise<ChatSession> => {
   // In a real app, this would make an API call to update the chat session
   return { id, ...updates } as ChatSession;
 };
@@ -94,7 +91,7 @@ const updateChatSession = async (id: string, updates: Partial<ChatSession>): Pro
 const deleteChatSession = async (id: string): Promise<void> => {
   // In a real app, this would make an API call to delete the chat session
   console.log('Deleting chat session:', id);
-};
+}; */
 
 export function Chat() {
   const queryClient = useQueryClient();
@@ -134,35 +131,6 @@ export function Chat() {
     },
   });
 
-  // Update chat session mutation
-  const updateChatMutation = useMutation({
-    mutationFn: ({ id, updates }: { id: string; updates: Partial<ChatSession> }) => 
-      updateChatSession(id, updates),
-    onSuccess: (updatedChat) => {
-      queryClient.setQueryData(['chat-history'], (old: ChatSession[] = []) => 
-        old.map(chat => chat.id === updatedChat.id ? updatedChat : chat)
-      );
-    },
-    onError: (error) => {
-      console.error('Error updating chat session:', error);
-    },
-  });
-
-  // Delete chat session mutation
-  const deleteChatMutation = useMutation({
-    mutationFn: deleteChatSession,
-    onSuccess: (_, deletedId) => {
-      queryClient.setQueryData(['chat-history'], (old: ChatSession[] = []) => 
-        old.filter(chat => chat.id !== deletedId)
-      );
-      if (activeChatId === deletedId) {
-        setActiveChatId(null);
-      }
-    },
-    onError: (error) => {
-      console.error('Error deleting chat session:', error);
-    },
-  });
 
   // Example suggestions for new users
   const suggestions = [

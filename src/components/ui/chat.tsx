@@ -75,8 +75,9 @@ export function Chat({
     if (!setMessages) return
 
     const latestMessages = [...messagesRef.current]
-    const lastAssistantMessage = latestMessages.findLast(
-      (m) => m.role === "assistant"
+    // Use reverse and find instead of findLast for compatibility
+    const lastAssistantMessage = [...latestMessages].reverse().find(
+      (m: Message) => m.role === "assistant"
     )
 
     if (!lastAssistantMessage) return
@@ -85,8 +86,9 @@ export function Chat({
     let updatedMessage = { ...lastAssistantMessage }
 
     if (lastAssistantMessage.toolInvocations) {
+      // Use any type to avoid complex type issues with toolInvocations
       const updatedToolInvocations = lastAssistantMessage.toolInvocations.map(
-        (toolInvocation) => {
+        (toolInvocation: any) => {
           if (toolInvocation.state === "call") {
             needsUpdate = true
             return {
@@ -111,7 +113,7 @@ export function Chat({
     }
 
     if (lastAssistantMessage.parts && lastAssistantMessage.parts.length > 0) {
-      const updatedParts = lastAssistantMessage.parts.map((part: any) => {
+      const updatedParts = lastAssistantMessage.parts.map((part) => {
         if (
           part.type === "tool-invocation" &&
           part.toolInvocation &&
@@ -136,7 +138,7 @@ export function Chat({
       if (needsUpdate) {
         updatedMessage = {
           ...updatedMessage,
-          parts: updatedParts,
+          parts: updatedParts as any, // Type assertion to avoid complex type issues
         }
       }
     }
@@ -303,7 +305,7 @@ interface ChatFormProps {
 }
 
 export const ChatForm = forwardRef<HTMLFormElement, ChatFormProps>(
-  ({ children, handleSubmit, isPending, className }, ref) => {
+  ({ children, handleSubmit, className }, ref) => {
     const [files, setFiles] = useState<File[] | null>(null)
 
     const onSubmit = (event: React.FormEvent) => {
