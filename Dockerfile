@@ -1,7 +1,7 @@
 FROM public.ecr.aws/docker/library/node:22
 
 # Set environment variables
-ENV NODE_ENV=production
+ENV NODE_ENV=dev
 ENV PORT=80
 
 # Environment variables from .env
