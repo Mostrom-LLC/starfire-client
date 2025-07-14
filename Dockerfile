@@ -2,7 +2,7 @@ FROM public.ecr.aws/docker/library/node:22
 
 # Set environment variables
 ENV NODE_ENV=production
-ENV PORT=3000
+ENV PORT=80
 
 # Environment variables from .env
 
@@ -21,6 +21,9 @@ WORKDIR /app
 # Install all dependencies including devDependencies
 COPY package*.json ./
 RUN npm ci --include=dev
+
+# Ensure TypeScript is properly installed
+RUN npm install -g typescript
 
 # Copy source code
 COPY . .
