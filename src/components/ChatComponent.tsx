@@ -189,7 +189,7 @@ const ChatComponent = () => {
       const response = await fetch('http://localhost:8000/api/ingest', {
         method: 'POST',
         headers: {
-          'Api-Key': import.meta.env.VITE_APIKEY || ''
+          'Api-Key': import.meta.env.VITE_API_KEY || ''
         },
         body: formData
       });
@@ -265,7 +265,7 @@ const ChatComponent = () => {
       
       const response = await fetch('http://localhost:8000/api/ingest', {
         headers: {
-          'Api-Key': import.meta.env.VITE_APIKEY || ''
+          'Api-Key': import.meta.env.VITE_API_KEY || ''
         }
       });
       

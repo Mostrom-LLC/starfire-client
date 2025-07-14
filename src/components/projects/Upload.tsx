@@ -50,7 +50,7 @@ interface DocumentsResponse {
 
 // API Configuration
 const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000';
-const API_KEY = import.meta.env.VITE_APIKEY || '';
+const API_KEY = import.meta.env.VITE_API_KEY || '';
 
 // API Functions
 const fetchDocuments = async ({ page = 1, pageCount = 10 }: { page?: number, pageCount?: number } = {}): Promise<DocumentsResponse> => {
@@ -499,37 +499,37 @@ export function Upload() {
           <table className="w-full table-fixed flex-1">
             <thead>
               <tr className="bg-gray-50 border-b border-gray-200">
-                <th className="w-[8%] px-4 py-3 text-left text-xs font-medium text-gray-600">
+                <th className="w-[8%] px-4 py-2 text-left text-xs font-medium text-gray-600">
                   Select
                 </th>
-                <th className="w-[25%] px-4 py-3 text-left text-xs font-medium text-gray-600">
+                <th className="w-[25%] px-4 py-2 text-left text-xs font-medium text-gray-600">
                   <div className="flex items-center justify-between">
                     <span>Name</span>
                     <button
                       onClick={() => handleSort('name')}
-                      className="ml-1 hover:bg-gray-200 p-0.5 rounded"
+                      className="ml-1 hover:bg-gray-200 p-1 rounded"
                       title="Sort by name"
                     >
-                      <ArrowUpDown className="h-1.5 w-3" />
+                      <ArrowUpDown className="h-4 w-4" />
                     </button>
                   </div>
                 </th>
-                <th className="w-[42%] px-4 py-3 text-left text-xs font-medium text-gray-600">
+                <th className="w-[42%] px-4 py-2 text-left text-xs font-medium text-gray-600">
                   <div className="flex items-center justify-between">
                     <span>Summary</span>
                     <button
                       onClick={() => handleSort('summary')}
-                      className="ml-1 hover:bg-gray-200 p-0.5 rounded"
+                      className="ml-1 hover:bg-gray-200 p-1 rounded"
                       title="Sort by summary"
                     >
-                      <ArrowUpDown className="h-1.5 w-3" />
+                      <ArrowUpDown className="h-4 w-4" />
                     </button>
                   </div>
                 </th>
-                <th className="w-[23%] px-4 py-3 text-left text-xs font-medium text-gray-600">
+                <th className="w-[23%] px-4 py-2 text-left text-xs font-medium text-gray-600">
                   Key Topics
                 </th>
-                <th className="w-[2%] px-4 py-3 text-left text-xs font-medium text-gray-600">
+                <th className="w-[2%] px-4 py-2 text-left text-xs font-medium text-gray-600">
                   {/* Actions column - reserved for future use */}
                 </th>
               </tr>
@@ -538,7 +538,7 @@ export function Upload() {
               {/* Uploading Documents */}
               {uploadingDocuments.map((uploadingDoc) => (
                 <tr key={uploadingDoc.id} className="border-b border-gray-100 bg-blue-50 hover:bg-blue-100">
-                  <td className="px-4 py-3 align-middle">
+                  <td className="px-4 py-2 align-middle">
                     <div className="flex items-center gap-2">
                       <div className="w-3 h-2 flex-shrink-0"></div>
                       <div className="animate-spin text-blue-600 flex-shrink-0">
@@ -548,7 +548,7 @@ export function Upload() {
                       </div>
                     </div>
                   </td>
-                  <td className="px-4 py-3 align-middle">
+                  <td className="px-4 py-2 align-middle">
                     <div className="flex items-center gap-2 min-w-0">
                       <span className="truncate text-blue-700 flex-1" title={uploadingDoc.name}>
                         {uploadingDoc.name}
@@ -556,45 +556,45 @@ export function Upload() {
                       <span className="text-xs text-blue-600 whitespace-nowrap flex-shrink-0">Uploading...</span>
                     </div>
                   </td>
-                  <td className="px-4 py-3 align-middle">
+                  <td className="px-4 py-2 align-middle">
                     <div className="animate-pulse bg-blue-200 h-4 w-24 rounded"></div>
                   </td>
-                  <td className="px-4 py-3 align-middle">
+                  <td className="px-4 py-2 align-middle">
                     <div className="flex gap-1 overflow-hidden">
                       <div className="animate-pulse bg-blue-200 h-5 w-12 rounded-sm"></div>
                       <div className="animate-pulse bg-blue-200 h-5 w-8 rounded-sm"></div>
                     </div>
                   </td>
-                  <td className="px-4 py-3 align-middle"></td>
+                  <td className="px-4 py-2 align-middle"></td>
                 </tr>
               ))}
               
               {/* Loading State */}
               {isLoadingDocuments && Array.from({ length: 5 }, (_, index) => (
                 <tr key={index} className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="px-4 py-3 align-middle">
+                  <td className="px-4 py-2 align-middle">
                     <div className="animate-pulse bg-gray-200 h-4 w-8 rounded"></div>
                   </td>
-                  <td className="px-4 py-3 align-middle">
+                  <td className="px-4 py-2 align-middle">
                     <div className="animate-pulse bg-gray-200 h-4 w-32 rounded"></div>
                   </td>
-                  <td className="px-4 py-3 align-middle">
+                  <td className="px-4 py-2 align-middle">
                     <div className="animate-pulse bg-gray-200 h-4 w-full rounded"></div>
                   </td>
-                  <td className="px-4 py-3 align-middle">
+                  <td className="px-4 py-2 align-middle">
                     <div className="flex gap-1 overflow-hidden">
                       <div className="animate-pulse bg-gray-200 h-5 w-12 rounded-sm"></div>
                       <div className="animate-pulse bg-gray-200 h-5 w-8 rounded-sm"></div>
                     </div>
                   </td>
-                  <td className="px-4 py-3 align-middle"></td>
+                  <td className="px-4 py-2 align-middle"></td>
                 </tr>
               ))}
               
               {/* Error State */}
               {documentsError && (
                 <tr className="border-b border-gray-100">
-                  <td colSpan={5} className="px-4 py-8 text-center text-sm text-red-600">
+                  <td colSpan={5} className="px-4 py-6 text-center text-sm text-red-600">
                     Error: {documentsError instanceof Error ? documentsError.message : 'Failed to fetch documents'}
                   </td>
                 </tr>
@@ -609,7 +609,7 @@ export function Upload() {
                     selectedDocuments.has(doc.id) ? "bg-blue-50" : ""
                   )}
                 >
-                  <td className="px-4 py-3 align-middle">
+                  <td className="px-4 py-2 align-middle">
                     <div className="flex items-center gap-2">
                       <Checkbox 
                         checked={selectedDocuments.has(doc.id)}
@@ -625,21 +625,21 @@ export function Upload() {
                       </button>
                     </div>
                   </td>
-                  <td className="px-4 py-3 align-middle">
+                  <td className="px-4 py-2 align-middle">
                     <div className="min-w-0">
                       <span className="block truncate text-sm" title={String(doc.name || '')}>
                         {String(doc.name || '')}
                       </span>
                     </div>
                   </td>
-                  <td className="px-4 py-3 align-middle">
+                  <td className="px-4 py-2 align-middle">
                     <div className="min-w-0">
                       <span className="block truncate text-sm leading-5" title={String(doc.summary || '')}>
                         {String(doc.summary || '')}
                       </span>
                     </div>
                   </td>
-                  <td className="px-4 py-3 align-middle">
+                  <td className="px-4 py-2 align-middle">
                     <div className="flex gap-1 overflow-hidden max-w-full">
                       {Array.isArray(doc.key_topics) && doc.key_topics.length > 0 ? (
                         <>
@@ -670,14 +670,14 @@ export function Upload() {
                       )}
                     </div>
                   </td>
-                  <td className="px-4 py-3 align-middle"></td>
+                  <td className="px-4 py-2 align-middle"></td>
                 </tr>
               ))}
               
               {/* Empty State */}
               {!isLoadingDocuments && !documentsError && filteredAndSortedDocuments.length === 0 && uploadingDocuments.length === 0 && (
                 <tr className="border-b border-gray-100">
-                  <td colSpan={5} className="px-4 py-8 text-center text-gray-500">
+                  <td colSpan={5} className="px-4 py-6 text-center text-gray-500">
                     {searchQuery ? 'No documents match your search' : 'No documents found'}
                   </td>
                 </tr>

@@ -52,7 +52,7 @@ Create a `.env` file in the project root with the following variables:
 
 ```env
 VITE_BACKEND_URL=http://localhost:8000
-VITE_APIKEY=your-api-key
+VITE_API_KEY=your-api-key
 ```
 
 ### Installation
