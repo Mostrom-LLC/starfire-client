@@ -16,7 +16,10 @@
       "WebFetch(domain:ui.shadcn.com)",
       "mcp__ide__getDiagnostics",
       "Bash(node:*)",
-      "Bash(npm ls:*)"
+      "Bash(npm ls:*)",
+      "Bash(git rm:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ],
     "deny": []
   }
