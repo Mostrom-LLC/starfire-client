@@ -76,7 +76,7 @@ export default function Page() {
         onNavigate={handleNavigate}
         onLogout={handleLogout}
       />
-      <SidebarInset>
+      <SidebarInset className="flex flex-col h-full">
         <header className="flex h-16 shrink-0 items-center gap-2 px-4">
           <SidebarTrigger className="-ml-1" />
           <Separator
@@ -100,7 +100,9 @@ export default function Page() {
           
               </header>
               <Separator/>
-              {renderMainContent()}
+              <div className="flex-1 min-h-0 overflow-hidden">
+                {renderMainContent()}
+              </div>
               
       </SidebarInset>
     </SidebarProvider>

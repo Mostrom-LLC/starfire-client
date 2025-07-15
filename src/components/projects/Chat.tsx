@@ -187,7 +187,21 @@ export function Chat() {
       return; // Already connected
     }
 
-    const wsUrl = import.meta.env.VITE_WEB_SOCKET_URL || 'ws://localhost:8000/ws/query';
+    // Determine the WebSocket protocol based on the page protocol
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    
+    // Use environment variable if available, otherwise construct URL with appropriate protocol
+    let wsUrl = import.meta.env.VITE_WEB_SOCKET_URL;
+    
+    if (!wsUrl) {
+      // Extract host from environment or use default
+      const wsHost = import.meta.env.VITE_API_HOST || 'localhost:8000';
+      wsUrl = `${protocol}//${wsHost}/ws/query`;
+    } else if (wsUrl.startsWith('ws://') && protocol === 'wss:') {
+      // If we have a hardcoded ws:// URL but we're on https, upgrade to wss://
+      wsUrl = wsUrl.replace('ws://', 'wss://');
+    }
+    
     const ws = new WebSocket(wsUrl);
     
     ws.onopen = () => {
@@ -620,7 +634,7 @@ export function Chat() {
         </div>
         
         {/* Fixed Input Area at Bottom */}
-        <div className="pt-2 px-4 pb-4 shrink-0 flex justify-center">
+        <div className="pt-2 px-4 pb-4 shrink-0 flex justify-center bg-white border-t border-gray-200">
         <div className="w-full max-w-2xl">
           <form onSubmit={(e) => {
             e.preventDefault();

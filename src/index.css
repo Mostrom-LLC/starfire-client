@@ -159,6 +159,20 @@
   display: none;  /* Safari and Chrome */
 }
 
+/* Typing indicator animation */
+@keyframes typing-dot-bounce {
+  0%, 60%, 100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-typing-dot-bounce {
+  animation: typing-dot-bounce 1.4s infinite ease-in-out;
+}
+
 /* Print styles for dashboard export */
 @media print {
   /* Hide navigation and non-essential elements */
