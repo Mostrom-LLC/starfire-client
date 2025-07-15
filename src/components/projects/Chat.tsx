@@ -634,7 +634,7 @@ export function Chat() {
         </div>
         
         {/* Fixed Input Area at Bottom */}
-        <div className="pt-2 px-4 pb-4 shrink-0 flex justify-center">
+        <div className="pt-2 px-4 pb-4 shrink-0 flex justify-center bg-white border-t border-gray-200">
         <div className="w-full max-w-2xl">
           <form onSubmit={(e) => {
             e.preventDefault();
