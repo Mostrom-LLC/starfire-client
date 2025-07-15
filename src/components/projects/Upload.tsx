@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { LuExpand, LuSearch, LuTrash2, LuFile, LuFileText, LuFileImage, LuUpload } from "react-icons/lu";
+import { LuExpand, LuSearch, LuTrash2, LuFile, LuFileText, LuFileImage, LuUpload, LuX, LuChevronDown } from "react-icons/lu";
 import { ArrowUpDown } from "lucide-react";
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Checkbox } from '../ui/checkbox';
@@ -457,30 +457,40 @@ export function Upload() {
             <div className="flex flex-col gap-1 sm:flex-row sm:items-center">
               {/* Search */}
               <div className="relative">
-                <LuSearch className="absolute left-3 top-0.5/2 transform -translate-y-1/2 text-gray-400 h-2 w-3" />
+                <LuSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                 <input
                   type="text"
                   placeholder="Search documents..."
-                  className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="pl-10 pr-10 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery('')}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    title="Clear search"
+                  >
+                    <LuX className="h-4 w-4" />
+                  </button>
+                )}
               </div>
               
               {/* Sort */}
-              <select
-                className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={`${sortField || ''}-${sortOrder}`}
-                onChange={(e) => {
-                  const [field, order] = e.target.value.split('-');
-                  if (field) {
-                    setSortField(field as keyof Document);
-                    setSortOrder(order as 'asc' | 'desc');
-                  } else {
-                    setSortField(null);
-                  }
-                }}
-              >
+              <div className="relative">
+                <select
+                  className="appearance-none px-3 py-2 pr-8 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                  value={`${sortField || ''}-${sortOrder}`}
+                  onChange={(e) => {
+                    const [field, order] = e.target.value.split('-');
+                    if (field) {
+                      setSortField(field as keyof Document);
+                      setSortOrder(order as 'asc' | 'desc');
+                    } else {
+                      setSortField(null);
+                    }
+                  }}
+                >
                 <option value="-">No sorting</option>
                 <option value="upload_timestamp-desc">Latest First</option>
                 <option value="upload_timestamp-asc">Oldest First</option>
@@ -490,6 +500,8 @@ export function Upload() {
                 <option value="size-asc">Smallest First</option>
                 <option value="type-asc">Type A-Z</option>
               </select>
+              <LuChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4 pointer-events-none" />
+            </div>
             </div>
           </div>
         </div>
