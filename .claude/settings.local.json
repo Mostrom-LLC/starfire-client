@@ -15,7 +15,8 @@
       "Bash(npm install:*)",
       "WebFetch(domain:ui.shadcn.com)",
       "mcp__ide__getDiagnostics",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(npm ls:*)"
     ],
     "deny": []
   }
