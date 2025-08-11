@@ -544,8 +544,8 @@ export function Chat() {
         </div>
         
         {/* Chat Messages Area - Scrollable */}
-        <div className="flex-1 overflow-y-auto pb-24">
-        <Conversation className="h-full w-full">
+        <div className="flex-1 overflow-y-auto pb-70">
+        <Conversation className="w-full">
           <ConversationContent className="px-4">
             {!connected ? (
               /* Warming up loader */
@@ -597,10 +597,10 @@ export function Chat() {
               </div>
             ) : (
               /* Chat Messages */
-              <div className="space-y-4 py-4 max-w-full overflow-hidden">
+              <div className="space-y-4 py-4 max-w-full">
                 {messages.map((message) => (
-                  <div key={message.id} className="w-full overflow-hidden">
-                    <div className="w-full overflow-hidden">
+                  <div key={message.id} className="w-full">
+                    <div className="w-full">
                       <ChatMessage
                         {...message}
                         showTimeStamp={false}
