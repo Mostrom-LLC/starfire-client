@@ -413,11 +413,11 @@ export function Chat() {
     : chatHistory;
 
   return (
-    <div className="relative h-full w-full overflow-hidden">
+    <div className="flex h-screen w-full overflow-hidden">
       {/* Chat History Sidebar */}
       <div className={cn(
-        "absolute left-0 top-0 z-10 border-r border-gray-200 flex flex-col h-full overflow-hidden transition-all duration-200 bg-white",
-        sidebarOpen ? "w-72 translate-x-0" : "w-72 -translate-x-full"
+        "border-r border-gray-200 flex flex-col h-screen transition-all duration-200 bg-white flex-shrink-0",
+        sidebarOpen ? "w-72" : "w-0 overflow-hidden"
       )}>
         <div className="p-4 border-b border-gray-200 shrink-0">
           <div className="flex items-center justify-between mb-2">
@@ -497,12 +497,9 @@ export function Chat() {
       </div>
       
       {/* Main Chat Area */}
-      <div className={cn(
-        "flex flex-col h-full w-full overflow-hidden transition-all duration-200",
-        sidebarOpen ? "pl-72" : "pl-0"
-      )}>
+      <div className="flex flex-col h-screen flex-1 min-w-0 relative">
         {/* Header with controls */}
-        <div className="flex items-center justify-between p-4">
+        <div className="flex items-center justify-between p-4 flex-shrink-0 border-b border-gray-200">
           <div className="flex items-center">
             <Button
               variant="ghost"
@@ -547,11 +544,12 @@ export function Chat() {
         </div>
         
         {/* Chat Messages Area - Scrollable */}
-        <Conversation className="flex-1 w-full">
+        <div className="flex-1 overflow-y-auto pb-24">
+        <Conversation className="h-full w-full">
           <ConversationContent className="px-4">
             {!connected ? (
               /* Warming up loader */
-              <div className="flex items-center justify-center h-full w-full">
+              <div className="flex items-center justify-center min-h-[400px] w-full">
                 <div className="text-center">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
                   <p className="text-gray-600 text-sm">Warming up...</p>
@@ -559,7 +557,7 @@ export function Chat() {
               </div>
             ) : messages.length === 0 ? (
               /* Welcome Screen */
-              <div className="flex items-center justify-center h-full w-full">
+              <div className="flex items-center justify-center min-h-[400px] py-8 w-full">
                 <div className="w-full max-w-lg mx-auto">
                   <div className="text-center mb-6">
                     <h1 className="text-xl mb-2">How can I help you today?</h1>
@@ -641,10 +639,11 @@ export function Chat() {
           </ConversationContent>
           <ConversationScrollButton />
         </Conversation>
+        </div>
         
         {/* Fixed Input Area at Bottom */}
-        <div className="pt-2 px-4 pb-4 shrink-0 flex justify-center bg-white border-t border-gray-200">
-        <div className="w-full max-w-2xl">
+        <div className="absolute bottom-0 left-0 right-0 pt-3 px-4 pb-40 bg-white">
+        <div className="w-full max-w-2xl mx-auto">
           <PromptInput 
             onSubmit={(e) => {
               e.preventDefault();
@@ -685,7 +684,7 @@ export function Chat() {
               </div>
             </PromptInputToolbar>
           </PromptInput>
-          <p className="text-xs text-gray-500 text-center mt-2 w-full overflow-hidden">
+          <p className="text-xs text-gray-500 text-center mt-1 w-full overflow-hidden">
             <span className="inline-block max-w-full truncate">AI can make mistakes. Consider checking important information.</span>
           </p>
         </div>

@@ -38,14 +38,14 @@ export function ProjectComponent({ projectName }: ProjectComponentProps) {
 
   return (
     <>
-    <div className="flex flex-1 flex-col gap-4 p-4 pt-0 h-full min-h-0">
+    <div className="flex flex-1 flex-col h-full min-h-0">
       
       <Tabs 
         value={activeTab} 
         onValueChange={handleTabChange}
-        className="pt-2 flex flex-col h-full min-h-0"
+        className="flex flex-col h-full min-h-0"
       >
-        <div className="w-full flex justify-center sticky top-0 z-10 bg-white">
+        <div className="w-full flex justify-center sticky top-0 z-10 bg-white px-4 pt-4 pb-2">
           <TabsList className="rounded-md">
             <TabsTrigger value="upload" className="px-8 rounded-md">Upload</TabsTrigger>
             <TabsTrigger value="analyze" className="px-8 rounded-md">Analyze</TabsTrigger>
@@ -53,10 +53,10 @@ export function ProjectComponent({ projectName }: ProjectComponentProps) {
           </TabsList>
         </div>
         <div className="flex-1 w-full overflow-hidden min-h-0">
-          <TabsContent value="upload" className="h-full overflow-hidden flex flex-col">
+          <TabsContent value="upload" className="h-full overflow-hidden flex flex-col p-4">
            <Upload />
           </TabsContent>
-          <TabsContent value="analyze" className="h-full overflow-hidden flex flex-col">
+          <TabsContent value="analyze" className="h-full overflow-hidden flex flex-col p-4">
            <Review />
           </TabsContent>
           <TabsContent value="chat" className="h-full overflow-hidden flex flex-col">
