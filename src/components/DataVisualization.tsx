@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
@@ -189,10 +189,22 @@ export function DataVisualization() {
   const [selectedVisualizationIndex, setSelectedVisualizationIndex] = useState<number>(0);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
+  // Debug effect to monitor visualization state changes
+  useEffect(() => {
+    console.log('Visualization state changed:', {
+      hasCurrentSet: !!currentVisualizationSet,
+      setId: currentVisualizationSet?.id,
+      selectedIndex: selectedVisualizationIndex,
+      visualizationsLength: currentVisualizationSet?.visualizations?.length
+    });
+  }, [currentVisualizationSet, selectedVisualizationIndex]);
+
   // TanStack Query for fetching visualization sets
   const { data: visualizationSetsData, isLoading, error } = useQuery({
     queryKey: ['visualization-sets'],
     queryFn: fetchVisualizationSets,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
   });
 
   const availableVisualizationSets = visualizationSetsData?.visualizationSets || [];
@@ -232,6 +244,7 @@ export function DataVisualization() {
   const deleteMutation = useMutation({
     mutationFn: deleteVisualizationSet,
     onSuccess: (_, setId) => {
+      // Only clear if we're deleting the currently viewed set
       if (currentVisualizationSet?.id === setId) {
         setCurrentVisualizationSet(null);
         setSelectedVisualizationIndex(0);
@@ -305,7 +318,10 @@ export function DataVisualization() {
 
 
   const renderChart = () => {
-    if (!currentVisualizationSet || !currentVisualizationSet.visualizations[selectedVisualizationIndex]) return null;
+    if (!currentVisualizationSet || !currentVisualizationSet.visualizations[selectedVisualizationIndex]) {
+      console.log('No visualization data:', { currentVisualizationSet, selectedVisualizationIndex });
+      return null;
+    }
     
     const visualization = currentVisualizationSet.visualizations[selectedVisualizationIndex];
 
@@ -765,7 +781,20 @@ export function DataVisualization() {
                   <p className="text-sm text-gray-600 mb-4">
                     {currentVisualizationSet.visualizations[selectedVisualizationIndex].description}
                   </p>
-                  {renderChart()}
+                  <div className="chart-container">
+                    {(() => {
+                      try {
+                        return renderChart();
+                      } catch (error) {
+                        console.error('Chart rendering error:', error);
+                        return (
+                          <div className="flex items-center justify-center h-[300px] border border-gray-200 rounded">
+                            <p className="text-red-500">Error rendering chart</p>
+                          </div>
+                        );
+                      }
+                    })()}
+                  </div>
                 </div>
                 
                 <div className="grid md:grid-cols-2 gap-6 mt-6">
