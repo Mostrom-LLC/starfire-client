@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { ChatMessage, type Message } from '../ui/chat-message';
-import { MessageInput } from '../ui/message-input';
 import { TypingIndicator } from '../ui/typing-indicator';
 import { Copy, Check, Pencil, RefreshCw, Search, MessageSquare, Plus, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -19,6 +18,18 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import {
+  PromptInput,
+  PromptInputTextarea,
+  PromptInputToolbar,
+  PromptInputTools,
+  PromptInputSubmit
+} from '@/components/ai-elements/prompt-input';
+import {
+  Conversation,
+  ConversationContent,
+  ConversationScrollButton
+} from '@/components/ai-elements/conversation';
 
 interface InternalMessage {
   type: 'query' | 'chunk' | 'response' | 'error' | 'system';
@@ -105,7 +116,6 @@ export function Chat() {
   const [copiedMessages, setCopiedMessages] = useState<Set<string>>(new Set());
   const wsRef = useRef<WebSocket | null>(null);
   const currentResponseIndexRef = useRef<number>(-1);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeChatId, setActiveChatId] = useState<string | null>(null);
@@ -167,10 +177,7 @@ export function Chat() {
     setMessages(convertedMessages);
   }, [chatMessages]);
 
-  // Auto-scroll to bottom when messages change
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+  // Note: Auto-scroll is now handled by the Conversation component
 
   // Auto-connect on component mount
   useEffect(() => {
@@ -540,133 +547,144 @@ export function Chat() {
         </div>
         
         {/* Chat Messages Area - Scrollable */}
-        <div className="flex-1 overflow-y-auto px-4 min-h-0 pb-2 w-full">
-          {!connected ? (
-            /* Warming up loader */
-            <div className="flex items-center justify-center h-full w-full">
-              <div className="text-center">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
-                <p className="text-gray-600 text-sm">Warming up...</p>
-              </div>
-            </div>
-          ) : messages.length === 0 ? (
-            /* Welcome Screen */
-            <div className="flex items-center justify-center h-full w-full">
-              <div className="w-full max-w-lg mx-auto">
-                <div className="text-center mb-6">
-                  <h1 className="text-xl mb-2">How can I help you today?</h1>
-                  <p className="text-gray-600 text-sm">
-                    Ask questions to uncover market dynamics, prescribing trends, and data-driven insights.
-                  </p>
-                </div>
-                
-                {/* Suggestion Cards */}
-                <div className="grid grid-cols-1 gap-3 mb-6">
-                  {suggestions.map((suggestion, index) => (
-                    <button
-                      key={index}
-                      onClick={() => {
-                        if (!connected || isStreaming) return;
-                        // Send the query immediately
-                        if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-                          setIsStreaming(false);
-                          setIsWaitingForResponse(true);
-                          addMessage('query', suggestion);
-                          wsRef.current.send(JSON.stringify({ 
-                            query: suggestion,
-                            sessionId: sessionId.current 
-                          }));
-                          // Clear the input field after sending
-                          setQuery('');
-                        }
-                      }}
-                      className="p-3 border border-gray-200 rounded-lg text-left hover:bg-gray-50 transition-colors"
-                      disabled={!connected || isStreaming}
-                    >
-                      <p className="text-sm">{suggestion}</p>
-                    </button>
-                  ))}
+        <Conversation className="flex-1 w-full">
+          <ConversationContent className="px-4">
+            {!connected ? (
+              /* Warming up loader */
+              <div className="flex items-center justify-center h-full w-full">
+                <div className="text-center">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
+                  <p className="text-gray-600 text-sm">Warming up...</p>
                 </div>
               </div>
-            </div>
-          ) : (
-          /* Chat Messages */
-          <div className="space-y-4 py-4 max-w-full overflow-hidden">
-            {messages.map((message) => (
-              <div key={message.id} className="w-full overflow-hidden">
-                <div className="w-full overflow-hidden">
-                  <ChatMessage
-                    {...message}
-                    showTimeStamp={false}
-                  />
+            ) : messages.length === 0 ? (
+              /* Welcome Screen */
+              <div className="flex items-center justify-center h-full w-full">
+                <div className="w-full max-w-lg mx-auto">
+                  <div className="text-center mb-6">
+                    <h1 className="text-xl mb-2">How can I help you today?</h1>
+                    <p className="text-gray-600 text-sm">
+                      Ask questions to uncover market dynamics, prescribing trends, and data-driven insights.
+                    </p>
+                  </div>
+                  
+                  {/* Suggestion Cards */}
+                  <div className="grid grid-cols-1 gap-3 mb-6">
+                    {suggestions.map((suggestion, index) => (
+                      <button
+                        key={index}
+                        onClick={() => {
+                          if (!connected || isStreaming) return;
+                          // Send the query immediately
+                          if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+                            setIsStreaming(false);
+                            setIsWaitingForResponse(true);
+                            addMessage('query', suggestion);
+                            wsRef.current.send(JSON.stringify({ 
+                              query: suggestion,
+                              sessionId: sessionId.current 
+                            }));
+                            // Clear the input field after sending
+                            setQuery('');
+                          }
+                        }}
+                        className="p-3 border border-gray-200 rounded-lg text-left hover:bg-gray-50 transition-colors"
+                        disabled={!connected || isStreaming}
+                      >
+                        <p className="text-sm">{suggestion}</p>
+                      </button>
+                    ))}
+                  </div>
                 </div>
-                <div className="flex justify-end">
-                  {message.role === 'assistant' ? (
-                    <button
-                      onClick={() => copyToClipboard(message.content, message.id)}
-                      className="mt-2 p-2 opacity-50 hover:opacity-100 hover:bg-gray-100 rounded transition-all"
-                      title={copiedMessages.has(message.id) ? "Copied!" : "Copy message"}
-                    >
-                      {copiedMessages.has(message.id) ? (
-                        <Check className="h-4 w-4 text-green-600" />
-                      ) : (
-                        <Copy className="h-4 w-4" />
+              </div>
+            ) : (
+              /* Chat Messages */
+              <div className="space-y-4 py-4 max-w-full overflow-hidden">
+                {messages.map((message) => (
+                  <div key={message.id} className="w-full overflow-hidden">
+                    <div className="w-full overflow-hidden">
+                      <ChatMessage
+                        {...message}
+                        showTimeStamp={false}
+                      />
+                    </div>
+                    <div className="flex justify-end">
+                      {message.role === 'assistant' ? (
+                        <button
+                          onClick={() => copyToClipboard(message.content, message.id)}
+                          className="mt-2 p-2 opacity-50 hover:opacity-100 hover:bg-gray-100 rounded transition-all"
+                          title={copiedMessages.has(message.id) ? "Copied!" : "Copy message"}
+                        >
+                          {copiedMessages.has(message.id) ? (
+                            <Check className="h-4 w-4 text-green-600" />
+                          ) : (
+                            <Copy className="h-4 w-4" />
+                          )}
+                        </button>
+                      ) : message.role === 'user' && (
+                        <button
+                          onClick={() => editMessage(message.content)}
+                          className="mt-2 p-2 opacity-50 hover:opacity-100 hover:bg-gray-100 rounded transition-all"
+                          title="Edit message"
+                        >
+                          <Pencil className="h-4 w-4" />
+                        </button>
                       )}
-                    </button>
-                  ) : message.role === 'user' && (
-                    <button
-                      onClick={() => editMessage(message.content)}
-                      className="mt-2 p-2 opacity-50 hover:opacity-100 hover:bg-gray-100 rounded transition-all"
-                      title="Edit message"
-                    >
-                      <Pencil className="h-4 w-4" />
-                    </button>
-                  )}
-                </div>
+                    </div>
+                  </div>
+                ))}
+                {isWaitingForResponse && (
+                  <TypingIndicator />
+                )}
               </div>
-            ))}
-            {isWaitingForResponse && (
-              <TypingIndicator />
             )}
-            <div ref={messagesEndRef} />
-          </div>
-        )}
-        </div>
+          </ConversationContent>
+          <ConversationScrollButton />
+        </Conversation>
         
         {/* Fixed Input Area at Bottom */}
         <div className="pt-2 px-4 pb-4 shrink-0 flex justify-center bg-white border-t border-gray-200">
         <div className="w-full max-w-2xl">
-          <form onSubmit={(e) => {
-            e.preventDefault();
-            sendQuery();
-          }} className="relative w-full">
-            <MessageInput
+          <PromptInput 
+            onSubmit={(e) => {
+              e.preventDefault();
+              sendQuery();
+            }}
+            className="w-full"
+          >
+            <PromptInputTextarea
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Type your message here..."
               disabled={!connected || isStreaming}
-              isGenerating={isStreaming}
-              submitOnEnter={true}
               className="w-full"
             />
-            {/* Cancel button that appears during waiting or streaming */}
-            <div className="absolute right-3 top-3 z-30 flex gap-2">
-              {(isWaitingForResponse || isStreaming) && (
-                <button
-                  type="button"
-                  onClick={cancelRequest}
-                  className="h-8 w-8 bg-red-600 text-white rounded-md flex items-center justify-center hover:bg-red-700 transition-colors"
-                  aria-label="Cancel request"
-                  disabled={!connected}
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                  </svg>
-                </button>
-              )}
-            </div>
-          </form>
+            <PromptInputToolbar>
+              <PromptInputTools>
+                {/* Additional tools can go here */}
+              </PromptInputTools>
+              <div className="flex items-center gap-2">
+                {(isWaitingForResponse || isStreaming) && (
+                  <button
+                    type="button"
+                    onClick={cancelRequest}
+                    className="h-8 w-8 bg-red-600 text-white rounded-md flex items-center justify-center hover:bg-red-700 transition-colors"
+                    aria-label="Cancel request"
+                    disabled={!connected}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="18" y1="6" x2="6" y2="18"></line>
+                      <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                  </button>
+                )}
+                <PromptInputSubmit 
+                  disabled={!connected || !query.trim()}
+                  status={isWaitingForResponse ? 'submitted' : isStreaming ? 'streaming' : undefined}
+                />
+              </div>
+            </PromptInputToolbar>
+          </PromptInput>
           <p className="text-xs text-gray-500 text-center mt-2 w-full overflow-hidden">
             <span className="inline-block max-w-full truncate">AI can make mistakes. Consider checking important information.</span>
           </p>
