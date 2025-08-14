@@ -19,8 +19,9 @@ ENV VITE_WEB_SOCKET_URL=$VITE_WEB_SOCKET_URL
 WORKDIR /app
 
 # Install all dependencies including devDependencies
-COPY package.json ./
-RUN npm install
+COPY package*.json ./
+RUN npm ci --include=dev
+
 # Copy source code
 COPY . .
 
