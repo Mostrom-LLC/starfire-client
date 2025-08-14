@@ -213,7 +213,10 @@ export function Chat() {
     
     ws.onopen = () => {
       setConnected(true);
-      addMessage('system', 'Connected to WebSocket');
+      // Only add connection message for initial connection, not reconnections
+      if (chatMessages.length === 0) {
+        addMessage('system', 'Connected to WebSocket');
+      }
     };
 
     ws.onmessage = (event) => {
@@ -243,7 +246,7 @@ export function Chat() {
 
     ws.onclose = () => {
       setConnected(false);
-      addMessage('system', 'Disconnected from WebSocket');
+      // Don't add disconnect message during auto-reconnect to avoid chat disruption
       
       // Auto-reconnect after 3 seconds
       setTimeout(() => {
