@@ -1,7 +1,7 @@
 FROM public.ecr.aws/docker/library/node:22
 
 # Set environment variables
-ENV NODE_ENV=dev
+ENV NODE_ENV=production
 ENV PORT=80
 
 # Environment variables from .env
@@ -30,5 +30,5 @@ RUN npm run build
 # Expose port 80 for AWS
 EXPOSE 80
 
-# Start the application on port 80
-CMD ["npm", "run", "dev", "--", "--host", "--port", "80"]
+# Start the application on port 80 using preview (production mode)
+CMD ["npm", "run", "preview", "--", "--host", "0.0.0.0", "--port", "80"]
