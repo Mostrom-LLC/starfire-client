@@ -188,6 +188,11 @@ export function DataVisualization() {
   const [currentVisualizationSet, setCurrentVisualizationSet] = useState<VisualizationSet | null>(null);
   const [selectedVisualizationIndex, setSelectedVisualizationIndex] = useState<number>(0);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+  
+  // Persist selected visualization set ID
+  const [selectedSetId, setSelectedSetId] = useState<string | null>(() => {
+    return localStorage.getItem('selectedVisualizationSetId');
+  });
 
   // Debug effect to monitor visualization state changes
   useEffect(() => {
@@ -199,12 +204,23 @@ export function DataVisualization() {
     });
   }, [currentVisualizationSet, selectedVisualizationIndex]);
 
+  // Restore previously selected visualization set on mount
+  useEffect(() => {
+    if (selectedSetId && !currentVisualizationSet && !loadMutation.isPending) {
+      console.log('Restoring visualization set:', selectedSetId);
+      loadMutation.mutate(selectedSetId);
+    }
+  }, [selectedSetId]);
+
   // TanStack Query for fetching visualization sets
   const { data: visualizationSetsData, isLoading, error } = useQuery({
     queryKey: ['visualization-sets'],
     queryFn: fetchVisualizationSets,
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes
+    refetchOnWindowFocus: false, // Prevent refetch on window focus
+    refetchOnReconnect: false, // Prevent refetch on reconnect
+    refetchInterval: false, // No automatic polling
   });
 
   const availableVisualizationSets = visualizationSetsData?.visualizationSets || [];
@@ -219,6 +235,10 @@ export function DataVisualization() {
     onSuccess: (data) => {
       setCurrentVisualizationSet(data);
       setSelectedVisualizationIndex(0);
+      // Save the selected set ID
+      localStorage.setItem('selectedVisualizationSetId', data.id);
+      setSelectedSetId(data.id);
+      // Refetch the list to include the new set
       queryClient.invalidateQueries({ queryKey: ['visualization-sets'] });
     },
     onError: (error) => {
@@ -233,6 +253,9 @@ export function DataVisualization() {
     onSuccess: (data) => {
       setCurrentVisualizationSet(data);
       setSelectedVisualizationIndex(0);
+      // Persist the selected set ID
+      localStorage.setItem('selectedVisualizationSetId', data.id);
+      setSelectedSetId(data.id);
     },
     onError: (error) => {
       console.error('Error loading visualization set:', error);
@@ -248,6 +271,8 @@ export function DataVisualization() {
       if (currentVisualizationSet?.id === setId) {
         setCurrentVisualizationSet(null);
         setSelectedVisualizationIndex(0);
+        localStorage.removeItem('selectedVisualizationSetId');
+        setSelectedSetId(null);
       }
       queryClient.invalidateQueries({ queryKey: ['visualization-sets'] });
       toast.success("Visualization set deleted successfully");
@@ -708,7 +733,13 @@ export function DataVisualization() {
                 <Button 
                   variant="outline" 
                   size="icon" 
-                  onClick={() => queryClient.invalidateQueries({ queryKey: ['visualization-sets'] })}
+                  onClick={() => {
+                    // Refresh the list without clearing current selection
+                    queryClient.invalidateQueries({ 
+                      queryKey: ['visualization-sets'],
+                      refetchType: 'active'
+                    });
+                  }}
                   className="text-white hover:opacity-80"
                   style={{ backgroundColor: '#FFCC00' }}
                   title="Refresh visualization sets"
