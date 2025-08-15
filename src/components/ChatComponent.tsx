@@ -12,6 +12,9 @@ import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 import { DataVisualization } from './DataVisualization';
 import { Checkbox } from './ui/checkbox';
 
+const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000';
+const API_KEY = import.meta.env.VITE_API_KEY || '';
+
 interface InternalMessage {
   type: 'query' | 'chunk' | 'response' | 'error' | 'system';
   content: string;
@@ -186,10 +189,10 @@ const ChatComponent = () => {
         formData.append('file', file);
       });
       
-      const response = await fetch('http://localhost:8000/api/ingest', {
+      const response = await fetch(`${API_BASE_URL}/api/ingest`, {
         method: 'POST',
         headers: {
-          'Api-Key': import.meta.env.VITE_API_KEY || ''
+          'Api-Key': API_KEY
         },
         body: formData
       });
@@ -263,9 +266,9 @@ const ChatComponent = () => {
       setIsLoadingDocuments(true);
       setDocumentsError(null);
       
-      const response = await fetch('http://localhost:8000/api/ingest', {
+      const response = await fetch(`${API_BASE_URL}/api/ingest`, {
         headers: {
-          'Api-Key': import.meta.env.VITE_API_KEY || ''
+          'Api-Key': API_KEY
         }
       });
       
