@@ -96,6 +96,8 @@ interface VisualizationSetSummary {
 const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || window.location.origin;
 const API_KEY = import.meta.env.VITE_API_KEY || '';
 
+console.log(`API_BASE_URL: ${API_BASE_URL}`)
+
 // API Functions
 const fetchVisualizationSets = async (): Promise<{ visualizationSets: VisualizationSetSummary[] }> => {
   const response = await fetch(`${API_BASE_URL}/api/visualize`, {
